@@ -1,5 +1,7 @@
 #include <sigwinch.h>
 
+struct window window;
+
 void handle_sigwinch(int sig)
 {
     if (sig == SIGWINCH)
@@ -13,8 +15,8 @@ void handle_sigwinch(int sig)
     #elif defined(TIOCGWINSZ)
         struct winsize ws;
         ioctl(STDOUT, TIOCGWINSZ, &ws);
-        rows = ws.ws_row;
-        cols = ws.ws_col;
+        window.rows = ws.ws_row;
+        window.cols = ws.ws_col;
 
     #endif   
     }
