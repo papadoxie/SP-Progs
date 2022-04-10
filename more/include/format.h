@@ -3,6 +3,8 @@
 #ifndef __FORMAT_H__
 #define __FORMAT_H__
 
+#define COLOR_SEQ_SIZE 6
+
 #define ESC_FG_RED "\033[31m"
 #define ESC_FG_GREEN "\033[32m"
 #define ESC_FG_YELLOW "\033[33m"
@@ -21,8 +23,9 @@
 #define ESC_BG_WHITE "\033[47m"
 #define ESC_BG_DEFAULT "\033[49m"
 
-#define ESC_ERASE_LINE "\033[K\r"
+#define NORM_SEQ_SIZE 5
 
+#define ESC_ERASE_LINE "\033[K\r"
 #define ESC_BOLD "\033[1m"
 #define ESC_DIM "\033[2m"
 #define ESC_REVERSE "\033[7m"
