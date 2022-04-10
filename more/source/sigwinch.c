@@ -1,7 +1,10 @@
 #include <sigwinch.h>
 
 struct window window;
+
+// These functions will be called to refresh the buffer and display
 extern int initBuffer(void);
+extern void printBuffer(void);
 
 void handle_sigwinch(int sig)
 {
@@ -19,6 +22,7 @@ void handle_sigwinch(int sig)
         window.rows = ws.ws_row;
         window.cols = ws.ws_col;
         initBuffer();
+        printBuffer();
 #endif
     }
 }
