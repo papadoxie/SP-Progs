@@ -1,7 +1,14 @@
-#include <more.h>
+#include <argumentParser.h>
+#include <signal.h>
+#include <sigwinch.h>
 
 int main(int argc, char **argv)
 {
+    // Register SIGWINCH handler to handle window resizing on runtime
+    signal(SIGWINCH, handle_sigwinch);
+    // Raise SIGWINCH ourselves to initialize rows and cols
+    raise(SIGWINCH);
+
     struct argp argp =
         {
             options,
