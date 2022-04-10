@@ -21,6 +21,10 @@
 #define ESC_BG_WHITE "\033[47m"
 #define ESC_BG_DEFAULT "\033[49m"
 
+#define ESC_ERASE_LINE "\033[K\r"
+
+#define ESC_BOLD "\033[1m"
+#define ESC_DIM "\033[2m"
 #define ESC_REVERSE "\033[7m"
 #define ESC_RESET "\033[0m"
 
