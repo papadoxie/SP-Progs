@@ -3,6 +3,10 @@
 #ifndef __FORMAT_H__
 #define __FORMAT_H__
 
+// Maximum size of escape sequence
+#define SEQ_SIZE 11
+
+// Size of color escape sequence
 #define COLOR_SEQ_SIZE 6
 
 #define ESC_FG_RED "\033[31m"
@@ -23,6 +27,7 @@
 #define ESC_BG_WHITE "\033[47m"
 #define ESC_BG_DEFAULT "\033[49m"
 
+// Size of normal escape sequence
 #define NORM_SEQ_SIZE 5
 
 #define ESC_ERASE_LINE "\033[K\r"
