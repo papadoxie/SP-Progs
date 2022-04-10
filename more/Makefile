@@ -25,7 +25,7 @@ OBJS := $(patsubst $(SOURCE_DIR)/%.c, $(BIN_DIR)/%.o, $(C_SRCS))
 ##? Headers
 HDRS := $(wildcard $(INCLUDE_DIR)/*.h)
 ##? Dependencies
-DEPS := $(patsubst $(INCLUDE_DIR)/%.c, $(BIN_DIR)/%.d, $(HDRS))
+DEPS := $(patsubst $(SOURCE_DIR)/%.c, $(BIN_DIR)/%.d, $(C_SRCS))
 
 ##? Executable
 BIN = $(BIN_DIR)/more
@@ -41,7 +41,8 @@ $(BIN): $(OBJS)
 $(BIN_DIR):
 	mkdir $(BIN_DIR)
 
-$(BIN_DIR)/%.o: $(SOURCE_DIR)/%.c
+-include $(DEPS)
+$(BIN_DIR)/%.o: $(SOURCE_DIR)/%.c Makefile
 	$(CC) $(CFLAGS) $< -o $@
 
 clean:
