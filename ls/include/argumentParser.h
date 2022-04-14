@@ -19,11 +19,16 @@ error_t parse_opt(int key, char *arg, struct argp_state *state);
 // Variables used for argp
 extern const char doc[32];
 extern char args_doc[10];
-extern struct argp_option options[4];
+extern struct argp_option options[10];
 
 struct arguments
 {
     char directory[255];
+    int all;
+    int long_format;
+    int reverse;
+    int sort;
+    int time;
 };
 
 #endif // __ARGUMENT_PARSER_H__
