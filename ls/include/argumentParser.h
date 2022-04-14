@@ -13,6 +13,8 @@
 #define HELP_FILTER NULL
 #define ARGP_DOMAIN NULL
 
+#define FILENAME_LEN 255
+
 // Functions needed for argp
 error_t parse_opt(int key, char *arg, struct argp_state *state);
 

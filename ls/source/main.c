@@ -4,7 +4,7 @@
 int main(int argc, char **argv)
 {
     struct arguments arguments;
-    memset(arguments.directory, 0, FILENAME_MAX + 1);
+    memset(arguments.directory, 0, FILENAME_LEN + 1);
     arguments.all = 0;
     arguments.long_format = 0;
     arguments.reverse = 0;
