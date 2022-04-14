@@ -14,7 +14,7 @@ CFLAGS := $(CFLAGS) -MMD -MD -MP -ggdb
 #! Linker Settings
 LD := gcc
 LDFLAGS :=
-LDPATH := -lpthread
+LDPATH :=
 
 #! Files
 ##? Sources
