@@ -56,7 +56,7 @@ error_t parse_opt(int key, char *arg, struct argp_state *state)
         {
             argp_usage(state);
         }
-        strncpy(arguments->directory, arg, 255);
+        strncpy(arguments->directory, arg, FILENAME_MAX);
         break;
 
     case ARGP_KEY_END:
@@ -67,7 +67,7 @@ error_t parse_opt(int key, char *arg, struct argp_state *state)
             {
                 argp_usage(state);
             }
-            strncpy(arguments->directory, pwd, 255);
+            strncpy(arguments->directory, pwd, FILENAME_MAX);
         }
         break;
     }
