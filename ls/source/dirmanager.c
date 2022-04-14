@@ -38,6 +38,10 @@ struct dirent **getent(DIR *dirptr)
 
 void delent(struct dirent **entries)
 {
+    if (entries == NULL)
+    {
+        return;
+    }
     free(entries);
     n_entries = 0;
 }
