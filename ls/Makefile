@@ -10,10 +10,12 @@ CFLAGS := $(CFLAGS) -c
 CFLAGS := $(CFLAGS) -Wall -Werror -Wextra -Wpedantic
 CFLAGS := $(CFLAGS) -I$(INCLUDE_DIR)
 CFLAGS := $(CFLAGS) -MMD -MD -MP -ggdb
+CFLAGS := $(CFLAGS) -fsanitize=address -fno-omit-frame-pointer
 
 #! Linker Settings
 LD := gcc
 LDFLAGS :=
+LDFLAGS := -fsanitize=address
 LDPATH :=
 
 #! Files
