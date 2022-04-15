@@ -6,6 +6,7 @@
 #include <dirent.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <sys/stat.h>
 
 // Generic caller for entry print functions
@@ -13,6 +14,7 @@
                 struct dirent **: print_direntries, \
                 struct stat **: print_stats \
                 )(ENTRIES)
+
 
 void print_direntries(struct dirent **entries);
 void print_stats(struct stat **entries);
