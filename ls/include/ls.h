@@ -9,6 +9,10 @@
 #include <longListing.h>
 #include <dirmanager.h>
 #include <argumentParser.h>
+#include <output.h>
+#include <helpers.h>
+
+#define ERROR_MSG_LEN 512
 
 int ls(const void *args);
 
