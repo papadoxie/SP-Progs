@@ -25,7 +25,7 @@ extern struct argp_option options[10];
 
 struct arguments
 {
-    char directory[FILENAME_MAX + 1];
+    char directory[FILENAME_LEN + 1];
     int all;
     int long_format;
     int reverse;
