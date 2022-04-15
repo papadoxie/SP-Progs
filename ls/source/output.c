@@ -1,29 +1,30 @@
 #include <output.h>
 
-void print_dirent(struct dirent *entry)
+void print_dirname(struct dirent *entry)
 {
-    printf("%s\n", entry->d_name);
+    puts(entry->d_name);
 }
 
 void print_direntries(struct dirent **entries)
 {
     while (*entries != NULL)
     {
-        print_dirent(*entries);
+        print_dirname(*entries);
         entries++;
     }
 }
 
-void print_stat(struct stat *entry)
+void print_uid(struct stat *entry)
 {
-    printf("%ld\n", entry->st_ino);
+    printf("%i\n", entry->st_uid);
+
 }
 
 void print_stats(struct stat **entries)
 {
     while (*entries != NULL)
     {
-        print_stat(*entries);
+        print_uid(*entries);
         entries++;
     }
 }
