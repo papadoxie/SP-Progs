@@ -1,8 +1,10 @@
 #include <argumentParser.h>
+#include <locale.h>
 #include <ls.h>
 
 int main(int argc, char **argv)
 {
+    setlocale(LC_ALL, "");
     struct arguments arguments;
     memset(arguments.directory, 0, FILENAME_LEN + 1);
     arguments.all = 0;
