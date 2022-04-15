@@ -1,37 +1,34 @@
 #include <dirmanager.h>
 
-// Number of directory entries successfully read
-static unsigned int n_entries = 0;
+unsigned int dir_size(DIR *dirptr)
+{
+    struct dirent *entry;
+    unsigned int count = 0;
+    while ((entry = readdir(dirptr)) != NULL)
+    {
+        count++;
+    }
+    rewinddir(dirptr);
+    return count;
+}
 
 struct dirent **getent(DIR *dirptr)
 {
-    // Just get a pointer to realloc later
-    struct dirent **entries = malloc(sizeof(struct dirent *) * 0);
+    unsigned int num_entries = dir_size(dirptr);
+
+    struct dirent **entries = malloc(sizeof(struct dirent *) * (dir_size(dirptr) + 1));
     if (entries == NULL)
     {
         return NULL;
     }
+    memset(entries, 0, sizeof(struct dirent *) * (dir_size(dirptr) + 1));
 
-    do
+    for (unsigned int i = 0; i < num_entries; i++)
     {
-        if (n_entries % 32 == 0)
-        {
-            entries = realloc(entries, sizeof(struct dirent *) * (MEMSIZE * MEM_MULTIPLE));
-            if (entries == NULL)
-            {
-                return NULL;
-            }
-        }
-
-        struct dirent *entry = readdir(dirptr);
-        if (entry == NULL)
-        {
-            entries[n_entries] = NULL;
-            break;
-        }
-
-        entries[n_entries++] = entry;
-    } while (true);
+        entries[i] = readdir(dirptr);
+    }
+    
+    entries[num_entries] = NULL;
 
     return entries;
 }
@@ -43,5 +40,4 @@ void delent(struct dirent **entries)
         return;
     }
     free(entries);
-    n_entries = 0;
 }
