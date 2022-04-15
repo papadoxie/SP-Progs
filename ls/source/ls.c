@@ -1,39 +1,76 @@
 #include <ls.h>
 
-void print_entry(struct dirent *entry)
+void cleanup(DIR *dirptr,
+             struct dirent **entries,
+             struct stat **ent_stats,
+             unsigned int count)
 {
-    printf("%s\n", entry->d_name);
-}
-
-void print_entries(struct dirent **entries)
-{
-    while (*entries != NULL)
+    if (dirptr != NULL)
     {
-        print_entry(*entries);
-        entries++;
+        closedir(dirptr);
     }
+    delent(entries);
+    delent_stats(ent_stats, count);
 }
 
-int ls(const char *directory)
+int ls(const void *args)
 {
-    DIR *dirptr = opendir(directory);
-    if (dirptr == NULL)
+    struct arguments *arguments = (struct arguments *)args;
+
+    DIR *dirptr = opendir(arguments->directory);
+    if (!dirptr)
     {
-        perror("Error opening directory");
+        char error_msg[ERROR_MSG_LEN];
+        snprintf(error_msg, ERROR_MSG_LEN, "Error opening %s", arguments->directory);
+        perror(error_msg);
+        cleanup(dirptr, NULL, NULL, 0);
         return EXIT_FAILURE;
     }
 
+    // Get all the entries in the directory
     struct dirent **entries = getent(dirptr);
-    if (entries == NULL)
+    if (!entries)
     {
         perror("Error getting directory entries");
+        cleanup(dirptr, entries, NULL, 0);
         return EXIT_FAILURE;
     }
+    // Count the number of entries
+    unsigned int count = num_entries(entries);
 
-    print_entries(entries);
-    delent(entries);
+    // Sort entries
+    sort_entries(entries, count);
 
-    closedir(dirptr);
+    // Remove hidden files
+    if (!arguments->all)
+    {
+        filter_hidden(entries, count);
+        // Recount remaining entries
+        count = num_entries(entries);
+    }
     
+    // Reverse entries
+    if (arguments->reverse)
+    {
+        reverse_entries(entries, count);
+    }
+
+    // Not initializing until flags are set
+    struct stat **ent_stats = NULL;
+    if (arguments->long_format || arguments->time)
+    {
+        ent_stats = long_listing(entries, count);
+        if (!ent_stats)
+        {
+            perror("Error getting directory entries stats");
+            cleanup(dirptr, entries, ent_stats, count);
+            return EXIT_FAILURE;
+        }
+        PRINT_ENTS(ent_stats);
+    }
+
+    PRINT_ENTS(entries);
+
+    cleanup(dirptr, entries, ent_stats, count);
     return EXIT_SUCCESS;
 }
