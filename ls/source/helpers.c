@@ -10,14 +10,59 @@ unsigned int num_entries(struct dirent **entries)
     return count;
 }
 
+void filter_hidden(struct dirent **entries, unsigned int count)
+{
+    unsigned int removed = 0;
+    for (unsigned int i = 0; i < count; i++)
+    {
+        if (!entries[i])
+        {
+            continue;
+        }
+        if (entries[i]->d_name[0] == '.')
+        {
+            removed++;
+            entries[i] = NULL;
+            for (unsigned int j = i; j < count - 1; j++)
+            {
+                entries[j] = entries[j + 1];
+            }
+
+            entries[count - removed] = NULL;
+            i--;
+        }
+    }
+}
+
+void toLower(char *str)
+{
+    for (unsigned int i = 0; i < strlen(str); i++)
+    {
+        str[i] = tolower(str[i]);
+    }
+}
+
 int compare_entries(const void *ent1, const void *ent2)
 {
-    return strcmp(((struct dirent *)ent1)->d_name, ((struct dirent *)ent2)->d_name) > 0;
+    char *name1 = (*(struct dirent **)ent1)->d_name;
+    char *name2 = (*(struct dirent **)ent2)->d_name;
+
+    char tempName1[strlen(name1) + 1];
+    char tempName2[strlen(name2) + 1];
+
+    strcpy(tempName1, name1);
+    strcpy(tempName2, name2);
+
+    toLower(tempName1);
+    toLower(tempName2);
+
+    // Compare names
+    return strcmp(tempName1, tempName2);
 }
 
 void sort_entries(struct dirent **entries, unsigned int count)
 {
-    qsort(entries, count, sizeof(struct dirent *), compare_entries);
+    qsort(entries, count, sizeof(struct dirent **), compare_entries);
 }
 
 void reverse_entries(struct dirent **entries, unsigned int count)
