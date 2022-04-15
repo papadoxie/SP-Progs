@@ -8,5 +8,6 @@
 #include <sys/stat.h>
 
 struct stat **long_listing(struct dirent **entries, unsigned int num_entries);
+void delent_stats(struct stat **ent_stats, unsigned int num_entries);
 
 #endif // __LL_H__
