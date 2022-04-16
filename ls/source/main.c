@@ -5,13 +5,15 @@
 int main(int argc, char **argv)
 {
     setlocale(LC_ALL, "");
+
+    // Initialize argument parser
     struct arguments arguments;
     memset(arguments.directory, 0, FILENAME_LEN + 1);
     arguments.all = 0;
     arguments.long_format = 0;
     arguments.reverse = 0;
     arguments.sort = 0;
-    arguments.time = 0;
+    arguments.human_readable = 0;
 
     struct argp argp =
         {

@@ -30,7 +30,7 @@ struct arguments
     int long_format;
     int reverse;
     int sort;
-    int time;
+    int human_readable;
 };
 
 #endif // __ARGUMENT_PARSER_H__
