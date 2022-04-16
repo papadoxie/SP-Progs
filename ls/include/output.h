@@ -7,7 +7,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <format.h>
+#include <sys/ioctl.h>
 #include <sys/stat.h>
+
+#define STDOUT 1
 
 // Generic caller for entry print functions
 #define PRINT_ENTS(ENTRIES) _Generic ((ENTRIES), \
