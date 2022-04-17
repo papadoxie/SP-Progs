@@ -37,6 +37,12 @@ BIN = $(BIN_DIR)/ls
 
 all: $(BIN_DIR) $(BIN)
 
+release: REMOVE_FLAGS := -ggdb -fsanitize=address -fno-omit-frame-pointer
+release: CFLAGS := $(filter-out $(REMOVE_FLAGS), $(CFLAGS))
+release: CFLAGS := $(CFLAGS) -O2
+release: LDFLAGS := $(filter-out $(REMOVE_FLAGS), $(LDFLAGS))
+release: all
+
 $(BIN): $(OBJS)
 	$(LD) $(LDFLAGS) $^ -o $@ $(LDPATH)
 
