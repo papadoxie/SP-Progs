@@ -3,12 +3,12 @@
 const char *argp_program_version = "ls 2.1.0";
 const char *argp_program_bug_address = "nofilqasim@gmail.com";
 const char doc[] = "ls -- list files in a directory";
-char args_doc[] = "DIRECTORY";
+char args_doc[] = "DIRECTORY (MAX 19)";
 
 struct argp_option options[] =
     {
         {0, 0, 0, 0, "Output options:", 1},
-        {"directory", 777, "DIRECTORY", 0, "The path of the directory/directories to list, max 19", 1},
+        {"directory", 777, "DIRECTORY", 0, "The path of the directory(s) to list, max 19", 1},
         {"all", 'a', 0, 0, "List all files, including hidden files", 1},
         {"long", 'l', 0, 0, "List in long format", 1},
         {"reverse", 'r', 0, 0, "Reverse the order of the output", 1},

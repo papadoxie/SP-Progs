@@ -21,7 +21,7 @@ error_t parse_opt(int key, char *arg, struct argp_state *state);
 
 // Variables used for argp
 extern const char doc[32];
-extern char args_doc[10];
+extern char args_doc[19];
 extern struct argp_option options[10];
 
 struct arguments
