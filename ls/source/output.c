@@ -37,7 +37,7 @@ void print_normal_matrix(struct dirent **entries, unsigned int cols)
     while (*entries)
     {
         unsigned int dirname_length = strlen((*entries)->d_name);
-        printed += dirname_length + 2;
+        printed += max_dirname_length + 2;
         if (printed > cols)
         {
             printf("\n");
@@ -45,20 +45,12 @@ void print_normal_matrix(struct dirent **entries, unsigned int cols)
             continue;
         }
 
-        char path[PATH_MAX];
-        realpath((*entries)->d_name, path);
-        if (errno == ENAMETOOLONG)
-        {
-            entries++;
-            continue;
-        }
-
         struct stat stats;
-        stat(path, &stats);
+        stat((*entries)->d_name, &stats);
 
         print_name(*entries, &stats);
 
-        unsigned int diff = max_dirname_length - dirname_length + 2;
+        unsigned int diff = (max_dirname_length - dirname_length) + 2;
         printf("%*s", diff, " ");
 
         entries++;
