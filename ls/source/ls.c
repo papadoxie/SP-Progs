@@ -76,7 +76,7 @@ int ls(const void *args)
     }
 
     // Do long listing if args have been passed
-    if (arguments->long_format || arguments->human_readable)
+    if (arguments->long_format)
     {
         print_longlisting(entries, arguments);
     }
