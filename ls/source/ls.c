@@ -1,5 +1,6 @@
 #include <ls.h>
 
+// Cleanup before exit
 void cleanup(DIR *dirptr, struct dirent **entries, char *old_directory)
 {
     if (dirptr)
@@ -24,6 +25,7 @@ int ls(const void *args)
     unsigned int mul_dirs = strlen(arguments->directories[1]);
     if (!dirptr)
     {
+        // If more than one directory then dont print error message
         if (!mul_dirs)
         {
             char error_msg[ERROR_MSG_LEN];
@@ -34,12 +36,13 @@ int ls(const void *args)
         return EXIT_FAILURE;
     }
 
+    // Print directory names before listing if more than one directory
     if (mul_dirs)
     {
         printf("%s:\n", arguments->directory);
     }
 
-    // Change working directory
+    // Change working directory so stat can work
     char old_directory[PATH_MAX];
     getcwd(old_directory, PATH_MAX);
     chdir(arguments->directory);
@@ -72,6 +75,7 @@ int ls(const void *args)
         reverse_entries(entries, count);
     }
 
+    // Do long listing if args have been passed
     if (arguments->long_format || arguments->human_readable)
     {
         print_longlisting(entries, arguments);
