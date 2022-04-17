@@ -18,6 +18,7 @@ struct argp_option options[] =
 
 error_t parse_opt(int key, char *arg, struct argp_state *state)
 {
+    // Keep track of how many directories have been parsed
     static int directory_count = 0;
     struct arguments *arguments = state->input;
     switch (key)
