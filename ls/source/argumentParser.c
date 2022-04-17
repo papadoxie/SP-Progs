@@ -1,6 +1,6 @@
 #include <argumentParser.h>
 
-const char *argp_program_version = "ls 1.0.0";
+const char *argp_program_version = "ls 2.1.0";
 const char *argp_program_bug_address = "nofilqasim@gmail.com";
 const char doc[] = "ls -- list files in a directory";
 char args_doc[] = "DIRECTORY";
