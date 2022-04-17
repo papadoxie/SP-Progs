@@ -31,6 +31,7 @@
 #define NORM_SEQ_SIZE 5
 
 #define ESC_ERASE_LINE "\033[K\r"
+#define ESC_UNDERLINE "\033[4m"
 #define ESC_BOLD "\033[1m"
 #define ESC_DIM "\033[2m"
 #define ESC_REVERSE "\033[7m"
