@@ -34,7 +34,7 @@ void print_normal_matrix(struct dirent **entries, unsigned int cols)
 {
     unsigned int max_dirname_length = get_max_dirname_length(entries);
     unsigned int max_printable_cols = (cols / (max_dirname_length + 2));
-    unsigned int max_printable_rows = num_entries(entries) / max_printable_cols;
+    unsigned int max_printable_rows = (num_entries(entries) / max_printable_cols) + 1;
     unsigned int count = num_entries(entries);
 
     for (unsigned int i = 0; i < max_printable_rows; i++)
@@ -43,7 +43,7 @@ void print_normal_matrix(struct dirent **entries, unsigned int cols)
         {
             if((i + (j * max_printable_rows)) >= count)
             {
-                break;
+                continue;
             }
             struct dirent *entry = entries[i + (j * max_printable_rows)];
             if (!entry)
