@@ -33,27 +33,33 @@ void print_normal_oneline(struct dirent **entries)
 void print_normal_matrix(struct dirent **entries, unsigned int cols)
 {
     unsigned int max_dirname_length = get_max_dirname_length(entries);
-    unsigned int printed = 0;
-    while (*entries)
+    unsigned int max_printable_cols = (cols / (max_dirname_length + 2));
+    unsigned int max_printable_rows = num_entries(entries) / max_printable_cols;
+    unsigned int count = num_entries(entries);
+
+    for (unsigned int i = 0; i < max_printable_rows; i++)
     {
-        unsigned int dirname_length = strlen((*entries)->d_name);
-        printed += max_dirname_length + 2;
-        if (printed > cols)
+        for (unsigned int j = 0; j < max_printable_cols; j++)
         {
-            printf("\n");
-            printed = 0;
-            continue;
+            if((i + (j * max_printable_rows)) >= count)
+            {
+                break;
+            }
+            struct dirent *entry = entries[i + (j * max_printable_rows)];
+            if (!entry)
+            {
+                continue;
+            }
+
+            struct stat stats;
+            stat(entry->d_name, &stats);
+            print_name(entry, &stats);
+
+            unsigned int dirname_length = strlen(entry->d_name);
+            unsigned int diff = (max_dirname_length - dirname_length) + 2;
+            printf("%*s", diff, " ");
         }
-
-        struct stat stats;
-        stat((*entries)->d_name, &stats);
-
-        print_name(*entries, &stats);
-
-        unsigned int diff = (max_dirname_length - dirname_length) + 2;
-        printf("%*s", diff, " ");
-
-        entries++;
+        printf("\n");
     }
     printf("\n");
 }
