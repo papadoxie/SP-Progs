@@ -20,13 +20,23 @@ int ls(const void *args)
     struct arguments *arguments = (struct arguments *)args;
 
     DIR *dirptr = opendir(arguments->directory);
+    // Check if more than one directory was given
+    unsigned int mul_dirs = strlen(arguments->directories[1]);
     if (!dirptr)
     {
-        char error_msg[ERROR_MSG_LEN];
-        snprintf(error_msg, ERROR_MSG_LEN, "Error opening %s", arguments->directory);
-        perror(error_msg);
+        if (!mul_dirs)
+        {
+            char error_msg[ERROR_MSG_LEN];
+            snprintf(error_msg, ERROR_MSG_LEN, "Error opening %s", arguments->directory);
+            perror(error_msg);
+        }
         cleanup(dirptr, NULL, NULL);
         return EXIT_FAILURE;
+    }
+
+    if (mul_dirs)
+    {
+        printf("%s:\n", arguments->directory);
     }
 
     // Change working directory
@@ -55,7 +65,7 @@ int ls(const void *args)
         // Recount remaining entries
         count = num_entries(entries);
     }
-    
+
     // Reverse entries
     if (arguments->reverse)
     {
@@ -65,11 +75,11 @@ int ls(const void *args)
     if (arguments->long_format || arguments->human_readable)
     {
         print_longlisting(entries, arguments);
-    }else
+    }
+    else
     {
         print_normal(entries);
     }
-
 
     cleanup(dirptr, entries, old_directory);
     return EXIT_SUCCESS;

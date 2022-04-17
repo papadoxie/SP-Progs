@@ -8,7 +8,7 @@ char args_doc[] = "DIRECTORY";
 struct argp_option options[] =
     {
         {0, 0, 0, 0, "Output options:", 1},
-        {"directory", 777, "DIRECTORY", 0, "The path of the directory to list", 1},
+        {"directory", 777, "DIRECTORY", 0, "The path of the directory/directories to list, max 19", 1},
         {"all", 'a', 0, 0, "List all files, including hidden files", 1},
         {"long", 'l', 0, 0, "List in long format", 1},
         {"reverse", 'r', 0, 0, "Reverse the order of the output", 1},
@@ -18,6 +18,7 @@ struct argp_option options[] =
 
 error_t parse_opt(int key, char *arg, struct argp_state *state)
 {
+    static int directory_count = 0;
     struct arguments *arguments = state->input;
     switch (key)
     {
@@ -42,11 +43,11 @@ error_t parse_opt(int key, char *arg, struct argp_state *state)
         break;
 
     case ARGP_KEY_ARG:
-        if (state->arg_num > 1)
+        if (directory_count >= MAX_DIRS)
         {
             argp_usage(state);
         }
-        strncpy(arguments->directory, arg, FILENAME_LEN);
+        strncpy(arguments->directories[directory_count++], arg, FILENAME_LEN);
         break;
 
     case ARGP_KEY_END:
@@ -57,7 +58,7 @@ error_t parse_opt(int key, char *arg, struct argp_state *state)
             {
                 argp_usage(state);
             }
-            strncpy(arguments->directory, pwd, FILENAME_LEN);
+            strncpy(arguments->directories[0], pwd, FILENAME_LEN);
         }
         break;
     }
