@@ -6,15 +6,13 @@ int main(int argc, char **argv)
 {
     setlocale(LC_ALL, "");
 
-    // Initialize argument parser
+    // Initialize argument parser variables
     struct arguments arguments;
     memset(arguments.directory, 0, FILENAME_LEN + 1);
-
     for (unsigned int i = 0; i < MAX_DIRS; i++)
     {
         memset(arguments.directories[i], 0, FILENAME_LEN + 1);
     }
-
     arguments.all = 0;
     arguments.long_format = 0;
     arguments.reverse = 0;
@@ -36,6 +34,7 @@ int main(int argc, char **argv)
     // Go through all the directories
     for (unsigned int i = 0; i < MAX_DIRS; i++)
     {
+        // Check if directory name has been given
         if (strlen(arguments.directories[i]) > 0)
         {
             // Print newline if more than one directory
