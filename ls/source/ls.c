@@ -1,16 +1,18 @@
 #include <ls.h>
 
-void cleanup(DIR *dirptr,
-             struct dirent **entries,
-             struct stat **ent_stats,
-             unsigned int count)
+void cleanup(DIR *dirptr, struct dirent **entries, char *old_directory)
 {
-    if (dirptr != NULL)
+    if (dirptr)
     {
         closedir(dirptr);
     }
+
+    if (old_directory)
+    {
+        chdir(old_directory);
+    }
+
     delent(entries);
-    delent_stats(ent_stats, count);
 }
 
 int ls(const void *args)
@@ -23,16 +25,21 @@ int ls(const void *args)
         char error_msg[ERROR_MSG_LEN];
         snprintf(error_msg, ERROR_MSG_LEN, "Error opening %s", arguments->directory);
         perror(error_msg);
-        cleanup(dirptr, NULL, NULL, 0);
+        cleanup(dirptr, NULL, NULL);
         return EXIT_FAILURE;
     }
+
+    // Change working directory
+    char old_directory[PATH_MAX];
+    getcwd(old_directory, PATH_MAX);
+    chdir(arguments->directory);
 
     // Get all the entries in the directory
     struct dirent **entries = getent(dirptr);
     if (!entries)
     {
         perror("Error getting directory entries");
-        cleanup(dirptr, entries, NULL, 0);
+        cleanup(dirptr, entries, old_directory);
         return EXIT_FAILURE;
     }
     // Count the number of entries
@@ -55,22 +62,15 @@ int ls(const void *args)
         reverse_entries(entries, count);
     }
 
-    // Not initializing until flags are set
-    struct stat **ent_stats = NULL;
-    if (arguments->long_format || arguments->time)
+    if (arguments->long_format || arguments->human_readable)
     {
-        ent_stats = long_listing(entries, count);
-        if (!ent_stats)
-        {
-            perror("Error getting directory entries stats");
-            cleanup(dirptr, entries, ent_stats, count);
-            return EXIT_FAILURE;
-        }
-        PRINT_ENTS(ent_stats);
+        print_longlisting(entries, arguments);
+    }else
+    {
+        print_normal(entries);
     }
 
-    PRINT_ENTS(entries);
 
-    cleanup(dirptr, entries, ent_stats, count);
+    cleanup(dirptr, entries, old_directory);
     return EXIT_SUCCESS;
 }

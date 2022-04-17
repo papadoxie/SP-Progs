@@ -8,19 +8,22 @@
 #include <stdio.h>
 #include <string.h>
 #include <format.h>
-#include <sys/ioctl.h>
+#include <argumentParser.h>
+#include <helpers.h>
+#include <pwd.h>
+#include <grp.h>
+#include <time.h>
 #include <sys/stat.h>
 
-#define STDOUT 1
+#define PERMISSIONS_LEN 11
+#define USERNAME_LEN 10
+#define GROUP_LEN 10
+#define DATE_LEN 32
+#define TIME_LEN 13
+#define FILENAME_LEN 255
+#define SIZE_LEN 7
 
-// Generic caller for entry print functions
-#define PRINT_ENTS(ENTRIES) _Generic ((ENTRIES), \
-                struct dirent **: print_direntries, \
-                struct stat **: print_stats \
-                )(ENTRIES)
-
-
-void print_direntries(struct dirent **entries);
-void print_stats(struct stat **entries);
+void print_normal(struct dirent **entries);
+void print_longlisting(struct dirent **entries, const void *args);
 
 #endif

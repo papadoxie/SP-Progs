@@ -75,3 +75,24 @@ void reverse_entries(struct dirent **entries, unsigned int count)
         entries[count - i - 1] = temp;
     }
 }
+
+unsigned int get_term_width()
+{
+    struct winsize ws;
+    ioctl(STDOUT, TIOCGWINSZ, &ws);
+    return ws.ws_col;
+}
+
+unsigned int get_max_dirname_length(struct dirent **entries)
+{
+    unsigned int max_length = 0;
+    for (unsigned int i = 0; entries[i]; i++)
+    {
+        unsigned int length = strlen(entries[i]->d_name);
+        if (length > max_length)
+        {
+            max_length = length;
+        }
+    }
+    return max_length;
+}
