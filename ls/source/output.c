@@ -41,7 +41,7 @@ void print_normal_matrix(struct dirent **entries, unsigned int cols)
     {
         for (unsigned int j = 0; j < max_printable_cols; j++)
         {
-            if((i + (j * max_printable_rows)) >= count)
+            if ((i + (j * max_printable_rows)) >= count)
             {
                 continue;
             }
@@ -105,40 +105,35 @@ void print_groupname(struct stat *stats)
 
 void print_filetype(struct stat *stats)
 {
-    if (stats->st_mode & S_IFDIR)
+    mode_t mode = stats->st_mode;
+
+    switch(mode & S_IFMT)
     {
-        printf(ESC_FG_BLUE "d" ESC_FG_DEFAULT);
-        return;
-    }
-    if (!(stats->st_mode & S_IFREG))
-    {
-        if (stats->st_mode & S_IFLNK)
-        {
+        case S_IFDIR:
+            printf(ESC_FG_BLUE "d" ESC_FG_DEFAULT);
+            break;
+        case S_IFREG:
+            printf(".");
+            break;
+        case S_IFLNK:
             printf(ESC_FG_CYAN "l" ESC_FG_DEFAULT);
-            return;
-        }
-        if (stats->st_mode & S_IFSOCK)
-        {
+            break;
+        case S_IFSOCK:
             printf(ESC_FG_MAGENTA "s" ESC_FG_DEFAULT);
-            return;
-        }
-        if (stats->st_mode & S_IFCHR)
-        {
+            break;
+        case S_IFCHR:
             printf(ESC_FG_RED "c" ESC_FG_DEFAULT);
-            return;
-        }
-        if (stats->st_mode & S_IFBLK)
-        {
+            break;
+        case S_IFBLK:
             printf(ESC_FG_GREEN "b" ESC_FG_DEFAULT);
-            return;
-        }
-        if (stats->st_mode & S_IFIFO)
-        {
+            break;
+        case S_IFIFO:
             printf(ESC_FG_YELLOW "p" ESC_FG_DEFAULT);
-            return;
-        }
+            break;
+        default:
+            printf(ESC_FG_RED "?" ESC_FG_DEFAULT);
+            break;
     }
-    printf(".");
 }
 
 char *human_readable_size(unsigned long size, char *__restrict buffer)
