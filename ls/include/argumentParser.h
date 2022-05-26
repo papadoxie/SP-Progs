@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <argp.h>
-#include <ls.h>
 
 // Unused fields in argp struct
 #define ARGP_CHILDREN NULL
