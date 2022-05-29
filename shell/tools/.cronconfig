@@ -1,0 +1,4 @@
+[MAIN_PROMPT]
+LINE = "[pwd]"
+LINE = "[username]@[hostname] λ "
+[END]
