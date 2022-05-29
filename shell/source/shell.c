@@ -27,15 +27,17 @@ int init_shell(void)
         return 0;
     }
 
+    set_default_config();
     fclose(config_file);
     return 0;
 }
 
 int interactive_shell(void)
 {
-    while(true)
+    while (true)
     {
         print_prompt();
+        fgetc(stdin);
     }
     return 0;
 }

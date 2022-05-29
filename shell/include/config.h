@@ -5,9 +5,11 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #include <prompt.h>
 
+int set_config(FILE *config_file);
 int set_default_config(void);
 
 #endif // __CONFIG_H__

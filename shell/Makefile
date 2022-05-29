@@ -7,7 +7,7 @@ BIN_DIR := bin
 CC := gcc
 CFLAGS ?= -ggdb
 CFLAGS := $(CFLAGS) -c
-CFLAGS := $(CFLAGS) -Wall -Werror -Wextra -Wpedantic
+CFLAGS := $(CFLAGS) -Wall -Werror -Wextra
 CFLAGS := $(CFLAGS) -I$(INCLUDE_DIR)
 CFLAGS := $(CFLAGS) -MMD -MD -MP -ggdb
 CFLAGS := $(CFLAGS) -fsanitize=address -fno-omit-frame-pointer

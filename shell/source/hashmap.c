@@ -18,9 +18,11 @@ uint64_t calc_hash(char *key, uint64_t capacity)
     int symbol = 0;
     uint64_t hash = 5831;
 
-    while ((symbol = *key++))
+    symbol = *key;
+    while (symbol)
     {
         hash = ((hash << 5) + hash) + symbol;
+        symbol = *(++key);
     }
 
     hash = hash % capacity;

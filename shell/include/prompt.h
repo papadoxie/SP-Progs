@@ -6,9 +6,19 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <hashmap.h>
+
+#define MODIFIER_LENGTH 256
+#define MODIFIER_DELIMITERS "[]"
 
 void print_prompt(void);
 void free_prompt(int status, void *prompt_struct);
+
+typedef struct __prompt_modifiers
+{
+    char *modifier_index;
+    char *(*modifier)(char *, size_t);
+} prompt_modifier;
 
 typedef struct __prompt_t
 {
