@@ -29,13 +29,13 @@ int apply_modifier(char *buf, const char *modifier, size_t buf_size)
 
 void print_prompt(void)
 {
+    printf("\n");
     for (int i = 0; i < prompt.lines; i++)
     {
         if (i > 0)
         {
             printf("\n");
         }
-        const uint32_t prompt_size = strlen(prompt.prompt[i]) + 1;
         char *prompt_line = strdup(prompt.prompt[i]);
         prompt_line = strtok(prompt_line, MODIFIER_DELIMITERS);
         while (prompt_line)
