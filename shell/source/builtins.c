@@ -26,11 +26,11 @@ int cd(int argc, char **argv)
     }
 
     char *dirpath = NULL;
-    if (argc == 0)
+    if (argc == 1)
     {
         dirpath = getenv("HOME");
     }
-    else if (argc == 1)
+    else if (argc == 2)
     {
         dirpath = argv[1];
     }
