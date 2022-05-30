@@ -7,9 +7,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
 
 #define MODIFIER_LENGTH 256
-#define MODIFIER_DELIMITERS "[]"
+#define MODIFIER_DELIMITERS "{}"
 
 void print_prompt(void);
 void free_prompt(int status, void *prompt_struct);
