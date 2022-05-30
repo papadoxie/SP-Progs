@@ -25,6 +25,8 @@
 #define PIPE_IN 2
 #define PIPE_BOTH 3
 
+#define ARG_INDEX command->argc - 1
+
 typedef struct __command_t
 {
     char *command;
