@@ -5,7 +5,6 @@ BIN_DIR := bin
 
 #! Compiler Settings
 CC := gcc
-CFLAGS ?= -ggdb
 CFLAGS := $(CFLAGS) -c
 CFLAGS := $(CFLAGS) -Wall -Werror -Wextra -Wpedantic
 CFLAGS := $(CFLAGS) -I$(INCLUDE_DIR)
@@ -42,6 +41,12 @@ release: CFLAGS := $(filter-out $(REMOVE_FLAGS), $(CFLAGS))
 release: CFLAGS := $(CFLAGS) -O2
 release: LDFLAGS := $(filter-out $(REMOVE_FLAGS), $(LDFLAGS))
 release: all
+
+valgrind: REMOVE_FLAGS := -fsanitize=address -fno-omit-frame-pointer
+valgrind: CFLAGS := $(filter-out $(REMOVE_FLAGS), $(CFLAGS))
+valgrind: LDFLAGS := $(filter-out $(REMOVE_FLAGS), $(LDFLAGS))
+valgrind: all
+	valgrind --tool=memcheck --leak-check=full -s $(BIN)
 
 $(BIN): $(OBJS)
 	$(LD) $(LDFLAGS) $^ -o $@ $(LDPATH)
