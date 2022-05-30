@@ -29,7 +29,7 @@ int set_config(FILE *config_file)
 
 int set_default_config(void)
 {
-    const char *default_prompt = "|[username]@[hostname] [pwd]| $ ";
+    const char *default_prompt = DEFAULT_PROMPT;
     const int default_prompt_size = strlen(default_prompt) + 1;
     prompt.lines = 1;
 
