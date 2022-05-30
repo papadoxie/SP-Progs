@@ -9,8 +9,21 @@
 #include <stdint.h>
 #include <string.h>
 
-#define COMMAND_DELIMITERS ";|\n"
+#define COMMAND_DELIMITERS ";\n"
 #define ARG_DELIMITERS " "
+#define PIPE '|'
+#define PIPE_DELIMITERS "|"
+#define REDIRECT_DELIMITERS "<>"
+
+#define REDIRECT_IN "<"
+#define REDIRECT_OUT ">"
+#define REDIRECT_APPEND ">>"
+#define REDIRECT_ERR "2>"
+
+#define NO_PIPE 0
+#define PIPE_OUT 1
+#define PIPE_IN 2
+#define PIPE_BOTH 3
 
 typedef struct __command_t
 {
@@ -20,8 +33,8 @@ typedef struct __command_t
     FILE *instream;
     FILE *outstream;
     FILE *errstream;
-    bool piped_to_next;
-    bool piped_from_prev;
+    bool piped_out;
+    bool piped_in;
 } command_t;
 
 typedef struct __commands
