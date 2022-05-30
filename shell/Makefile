@@ -54,4 +54,5 @@ $(BIN_DIR)/%.o: $(SOURCE_DIR)/%.c Makefile
 	$(CC) $(CFLAGS) $< -o $@
 
 clean:
+	@rm -rvf null.d
 	@$(RM) -rvf $(BIN_DIR)
