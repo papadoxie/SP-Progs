@@ -66,5 +66,6 @@ int execute(commands_t *commands)
         }
     }
     free(processes);
+    processes = NULL;
     return final_status;
 }
