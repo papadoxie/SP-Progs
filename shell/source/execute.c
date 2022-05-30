@@ -13,7 +13,7 @@ int execute(commands_t *commands)
         if (!cur_proc.pid)
         {
             cur_proc.status = execvp(cur_proc.command->command,
-                                     cur_proc.command->arguments);
+                                     cur_proc.command->argv);
             if (cur_proc.status == -1)
             {
                 printf("cronShell: Unknown command: %s\n", cur_proc.command->command);
