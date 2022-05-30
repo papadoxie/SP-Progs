@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <setjmp.h>
 
 #include <prompt.h>
 #include <config.h>
