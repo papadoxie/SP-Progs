@@ -6,7 +6,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <hashmap.h>
+#include <string.h>
 
 #define MODIFIER_LENGTH 256
 #define MODIFIER_DELIMITERS "[]"
