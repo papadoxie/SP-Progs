@@ -6,8 +6,12 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <setjmp.h>
 
 #include <command_parser.h>
+#include <builtins.h>
+
+#define BUILTIN_NO_EXEC -124
 
 int execute(commands_t *commands);
 
