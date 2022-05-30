@@ -59,9 +59,8 @@ command_t *__internal_parse_command(const char *command_string, uint pipe_val)
         return NULL;
     }
 
-    command_copy = strtok(command_copy, ARG_DELIMITERS);
-    command->command = malloc(strlen(command_copy) + 1);
-    strncpy(command->command, command_copy, strlen(command_copy));
+    command_copy = strtok(command_copy, ARG_DELIMITERS);  
+    command->command = strdup(command_copy);
 
     command->argc = -1;
     command->argv = NULL;
@@ -69,7 +68,7 @@ command_t *__internal_parse_command(const char *command_string, uint pipe_val)
     while (command_copy)
     {
         command->argc++;
-        command->argv = realloc(command->argv, sizeof(char *) * command->argc + 1);
+        command->argv = realloc(command->argv, sizeof(char *) * (command->argc + 1));
         if (!command->argv)
         {
             perror("Could not process command");
@@ -78,15 +77,22 @@ command_t *__internal_parse_command(const char *command_string, uint pipe_val)
             return NULL;
         }
 
-        strncpy(command->argv[command->argc], command_copy, strlen(command_copy));
+        command->argv[command->argc] = strdup(command_copy);
         command_copy = strtok(NULL, ARG_DELIMITERS);
     }
+
+    command->argv = realloc(command->argv, sizeof(char *) * (command->argc + 2));
+    command->argv[command->argc + 1] = NULL;
 
     return command;
 }
 
 uint __internal_set_pipe(char *command_string)
 {
+    if (!strchr(command_string, PIPE))
+    {
+        return NO_PIPE;
+    }
     if (strchr(command_string, PIPE) == strrchr(command_string, PIPE))
     {
         return PIPE_OUT;
