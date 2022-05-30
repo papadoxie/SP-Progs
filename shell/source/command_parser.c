@@ -52,38 +52,38 @@ command_t *__internal_parse_command(const char *command_string, uint pipe_val)
     }
 
     char *command_copy = strdup(command_string);
-    if (!command_copy)
-    {
-        perror("Could not process command");
-        free(command);
-        return NULL;
-    }
+    // Make a copy so we can free after strtok ruins the original
+    char *command_copy_orig = command_copy;
 
     command_copy = strtok(command_copy, ARG_DELIMITERS);  
     command->command = strdup(command_copy);
 
-    command->argc = -1;
+    command->argc = 0;
     command->argv = NULL;
 
     while (command_copy)
     {
         command->argc++;
-        command->argv = realloc(command->argv, sizeof(char *) * (command->argc + 1));
+        command->argv = realloc(command->argv, sizeof(char *) * (command->argc));
         if (!command->argv)
         {
             perror("Could not process command");
             free(command->command);
+            free(command_copy_orig);
             free(command);
             return NULL;
         }
 
-        command->argv[command->argc] = strdup(command_copy);
+        command->argv[ARG_INDEX] = strdup(command_copy);
         command_copy = strtok(NULL, ARG_DELIMITERS);
     }
 
-    command->argv = realloc(command->argv, sizeof(char *) * (command->argc + 2));
-    command->argv[command->argc + 1] = NULL;
+    // Place NULL at end of argv
+    command->argv = realloc(command->argv, sizeof(char *) * (command->argc + 1));
+    command->argv[command->argc] = NULL;
 
+    // Free the copy
+    free(command_copy_orig);
     return command;
 }
 
@@ -128,6 +128,8 @@ commands_t *parse_commandline(const char *command_line)
     commands->commands = NULL;
 
     char *command_string = strdup(command_line);
+    // Make a copy so we can free after strtok ruins the original
+    char *command_string_orig = command_string;
     if (!command_string)
     {
         perror("Could not process command string");
@@ -152,15 +154,16 @@ commands_t *parse_commandline(const char *command_line)
         if (!commands->commands)
         {
             perror("Could not process command string");
-            free(command_string);
+            free(command_string_orig);
             free(commands);
             return NULL;
         }
+
         commands->commands[commands->num_commands] = __internal_parse_command(command_string, pipe_val);
         if (!commands->commands[commands->num_commands])
         {
             perror("Could not process command string");
-            free(command_string);
+            free(command_string_orig);
             free(commands);
             return NULL;
         }
@@ -168,6 +171,7 @@ commands_t *parse_commandline(const char *command_line)
         command_string = strtok(NULL, COMMAND_DELIMITERS);
     }
 
+    free(command_string_orig);
     return commands;
 }
 
