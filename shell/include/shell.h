@@ -9,6 +9,8 @@
 
 #include <prompt.h>
 #include <config.h>
+#include <command_parser.h>
+#include <execute.h>
 
 int init_shell(void);
 int interactive_shell(void);
