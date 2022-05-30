@@ -37,6 +37,8 @@ void print_prompt(void)
             printf("\n");
         }
         char *prompt_line = strdup(prompt.prompt[i]);
+        // Make a copy so we can free after strtok ruins the original
+        char *prompt_line_orig = prompt_line;
         prompt_line = strtok(prompt_line, MODIFIER_DELIMITERS);
         while (prompt_line)
         {
@@ -47,7 +49,7 @@ void print_prompt(void)
 
             prompt_line = strtok(NULL, MODIFIER_DELIMITERS);
         }
-        free(prompt_line);
+        free(prompt_line_orig);
     }
 }
 
@@ -64,18 +66,21 @@ void free_prompt(__attribute__((unused)) int status, void *prompt_struct)
 //! Write backups for these
 char *get_username(char *buf, size_t buf_size)
 {
-    strncpy(buf, getenv("USER"), buf_size);
+    strncpy(buf, getenv("USER") ? getenv("USER") : "user", buf_size);
     return buf;
 }
 
 char *get_hostname(char *buf, size_t buf_size)
 {
-    strncpy(buf, getenv("HOSTNAME"), buf_size);
+    if (gethostname(buf, buf_size) == -1)
+    {
+        strncpy(buf, "host", buf_size);
+    }
     return buf;
 }
 
 char *get_pwd(char *buf, size_t buf_size)
 {
-    strncpy(buf, getenv("PWD"), buf_size);
+    strncpy(buf, getenv("PWD") ? getenv("PWD") : "pwd", buf_size);
     return buf;
 }
