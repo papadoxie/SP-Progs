@@ -37,7 +37,25 @@ int interactive_shell(void)
     while (true)
     {
         print_prompt();
-        fgetc(stdin);
+
+        char *command_string = read_commandline(stdin);
+        if (!command_string)
+        {
+            continue;
+        }
+
+        commands_t *commands = parse_commandline(command_string);
+        if (!commands)
+        {
+            continue;
+        }
+
+        execute(commands);
+
+        free_commands(commands);
+        commands = NULL;
+        free(command_string);
+        command_string = NULL;
     }
     return 0;
 }
