@@ -13,15 +13,19 @@ int remove_comment(const char *buf)
 
 int set_config(FILE *config_file)
 {
-    const int LINELEN = 1024;
-    char line[LINELEN];
-    
-    while(fgets(line, LINELEN, config_file))
+
+    char *line = NULL;
+    size_t line_size = 0;
+
+    while(getline(&line, &line_size, config_file))
     {
-        if(remove_comment(line) && strlen(line) == 0)
+        char *line_orig = line;
+        if (remove_comment(line) && strlen(line) == 0)
         {
             continue;
         }
+
+        free(line_orig);
     }
 
     return 0;
