@@ -32,15 +32,15 @@ command_t *__internal_parse_command(const char *command_string, uint pipe_val)
     command->instream = NULL;
     command->outstream = NULL;
     command->errstream = NULL;
+    command->piped_out = false;
+    command->piped_in = false;
 
     switch (pipe_val)
     {
     case PIPE_OUT:
         command->piped_out = true;
-        command->piped_in = false;
         break;
     case PIPE_IN:
-        command->piped_out = false;
         command->piped_in = true;
         break;
     case PIPE_BOTH:
@@ -82,28 +82,24 @@ command_t *__internal_parse_command(const char *command_string, uint pipe_val)
     command->argv = realloc(command->argv, sizeof(char *) * (command->argc + 1));
     command->argv[command->argc] = NULL;
 
-    // Free the copy
+    // Free the copy1
     free(command_copy_orig);
     return command;
 }
 
 uint __internal_set_pipe(char *command_string)
 {
-    if (!strchr(command_string, PIPE))
-    {
-        return NO_PIPE;
-    }
-    if (strchr(command_string, PIPE) == strrchr(command_string, PIPE))
-    {
-        return PIPE_OUT;
-    }
     if (strchr(command_string, PIPE) == command_string)
     {
         if(strrchr(command_string, PIPE) != command_string)
         {
-            return PIPE_IN;
+            return PIPE_BOTH;
         }
-        return PIPE_BOTH;
+        return PIPE_IN;
+    }
+    if (strchr(command_string, PIPE))
+    {
+        return PIPE_OUT;
     }
     return NO_PIPE;
 }
