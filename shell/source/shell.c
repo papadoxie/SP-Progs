@@ -32,9 +32,10 @@ int init_shell(void)
         set_default_config();
         return 0;
     }
-
+    
     //TODO change this to parse config file when available
     set_default_config();
+
     fclose(config_file);
     return 0;
 }
