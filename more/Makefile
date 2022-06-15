@@ -9,12 +9,13 @@ CFLAGS ?= -ggdb
 CFLAGS := $(CFLAGS) -c
 CFLAGS := $(CFLAGS) -Wall -Werror -Wextra -Wpedantic
 CFLAGS := $(CFLAGS) -I$(INCLUDE_DIR)
-CFLAGS := $(CFLAGS) -MMD -MD -MP
+CFLAGS := $(CFLAGS) -MMD -MD -MP -ggdb
+CFLAGS := $(CFLAGS) -lpthread
 
 #! Linker Settings
 LD := gcc
 LDFLAGS :=
-LDPATH :=
+LDPATH := -lpthread
 
 #! Files
 ##? Sources
