@@ -40,13 +40,18 @@ release: REMOVE_FLAGS := -ggdb -fsanitize=address -fno-omit-frame-pointer
 release: CFLAGS := $(filter-out $(REMOVE_FLAGS), $(CFLAGS))
 release: CFLAGS := $(CFLAGS) -O2
 release: LDFLAGS := $(filter-out $(REMOVE_FLAGS), $(LDFLAGS))
-release: all
+release: clean all
 
 valgrind: REMOVE_FLAGS := -fsanitize=address -fno-omit-frame-pointer
 valgrind: CFLAGS := $(filter-out $(REMOVE_FLAGS), $(CFLAGS))
 valgrind: LDFLAGS := $(filter-out $(REMOVE_FLAGS), $(LDFLAGS))
-valgrind: all
+valgrind: clean all
 	valgrind --tool=memcheck --leak-check=full -s $(BIN)
+
+debug_without_asan: REMOVE_FLAGS:= -fsanitize=address -fno-omit-frame-pointer
+debug_without_asan: CFLAGS := $(filter-out $(REMOVE_FLAGS), $(CFLAGS))
+debug_without_asan: LDFLAGS := $(filter-out $(REMOVE_FLAGS), $(LDFLAGS))
+debug_without_asan: clean all
 
 $(BIN): $(OBJS)
 	$(LD) $(LDFLAGS) $^ -o $@ $(LDPATH)
