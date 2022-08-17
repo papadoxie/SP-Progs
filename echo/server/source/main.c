@@ -38,10 +38,17 @@ int main(void)
         {
             fprintf(stderr, "Client connected\n");
             char buffer[1024];
-            int n = read(client_sockfd, buffer, sizeof buffer);
-            fprintf(stderr, "Received %d bytes: %s\n", n, buffer);
-            n = write(client_sockfd, buffer, n);
-            fprintf(stderr, "Sent %d bytes\n", n);
+            
+            while (1)
+            {
+                int n = read(client_sockfd, buffer, sizeof buffer);
+                fprintf(stderr, "Received %d bytes: %s", n, buffer);
+                n = write(client_sockfd, buffer, n);
+                fprintf(stderr, "Sent %d bytes: %s", n, buffer);
+                if(!n){
+                    break;
+                }
+            }
             close(client_sockfd);
             fprintf(stderr, "Client disconnected\n");
         }
