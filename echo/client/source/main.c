@@ -33,7 +33,7 @@ int main(int argc, char **argv)
         .sin_addr = {.s_addr = server_ip},
         .sin_zero = {0}};
 
-    connect(sockfd, (struct sockaddr *)&server_addr, sizeof(server_addr));
+    connect(sockfd, (struct sockaddr *)&server_addr, sizeof server_addr);
 
     // Send and receive data
     while(1)
