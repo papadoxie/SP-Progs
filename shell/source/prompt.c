@@ -66,7 +66,8 @@ void free_prompt(__attribute__((unused)) int status, void *prompt_struct)
 //! Write backups for these
 char *get_username(char *buf, size_t buf_size)
 {
-    strncpy(buf, getenv("USER") ? getenv("USER") : "user", buf_size);
+    char *username = getenv("USER");
+    strncpy(buf, username ? username : "user", buf_size);
     return buf;
 }
 
@@ -81,6 +82,7 @@ char *get_hostname(char *buf, size_t buf_size)
 
 char *get_pwd(char *buf, size_t buf_size)
 {
-    strncpy(buf, getenv("PWD") ? getenv("PWD") : "pwd", buf_size);
+    char *pwd = getenv("PWD");
+    strncpy(buf, pwd ? pwd : "pwd", buf_size);
     return buf;
 }

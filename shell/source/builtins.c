@@ -8,13 +8,24 @@ int cd(int argc, char **argv);
 int pwd(int argc, char **argv);
 int exit_shell(int argc, char **argv);
 int echo(int argc, char **argv);
+int set(int argc, char **argv);
+int unset(int argc, char **argv);
+int jobs(int argc, __attribute__((unused)) char **argv);
 
+// Builtin functions accessible by the user
 builtin_func_t builtin_funcs[] = {
     {"cd", cd},
     {"pwd", pwd},
     {"exit", exit_shell},
     {"echo", echo},
+    {"set", set},
+    {"unset", unset},
+    {"jobs", jobs},
     {NULL, NULL}};
+
+// Array of backround processes
+job_t cur_jobs[MAX_BG_PROC];
+int num_jobs = 0;
 
 // Change directory
 int cd(int argc, char **argv)
@@ -80,6 +91,67 @@ int echo(int argc, char **argv)
     return 0;
 }
 
+// Set environment variable
+int set(int argc, char **argv)
+{
+    if (argc != 3)
+    {
+        fprintf(stderr, "set: Invalid number of arguments\n");
+        return 1;
+    }
+
+    if (setenv(argv[1], argv[2], 1) == -1)
+    {
+        fprintf(stderr, "set: Failed to set environment variable\n");
+        return 1;
+    }
+
+    return 0;
+}
+
+// Unset environment variable
+int unset(int argc, char **argv)
+{
+    if (argc != 2)
+    {
+        fprintf(stderr, "unset: Invalid number of arguments\n");
+        return 1;
+    }
+
+    if (unsetenv(argv[1]) == -1)
+    {
+        fprintf(stderr, "unset: Failed to unset environment variable\n");
+        return 1;
+    }
+
+    return 0;
+}
+
+// Create a new backround task
+void create_job(command_t *command, pid_t pid)
+{
+    cur_jobs[num_jobs].pid = pid;
+    char *command_name = strdup(command->command);
+    cur_jobs[num_jobs].command = command_name;
+    cur_jobs[num_jobs].status = 0;
+    num_jobs++;
+}
+
+int jobs(int argc, __attribute__((unused))char **argv)
+{
+    if (argc > 1)
+    {
+        fprintf(stderr, "jobs: Too many arguments\n");
+        return 1;
+    }
+
+    printf("ID      PID     COMMAND\n");
+    for (int i = 0; i < num_jobs; i++)
+    {
+        printf("%d     %d      %s\n", i + 1, cur_jobs[i].pid, cur_jobs[i].command);
+    }
+    return 0;
+}
 // Exit the shell
 int exit_shell(__attribute__((unused)) int argc,
                __attribute__((unused)) char **argv)

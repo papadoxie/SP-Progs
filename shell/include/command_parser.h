@@ -11,38 +11,43 @@
 
 #define COMMAND_DELIMITERS ";\n"
 #define ARG_DELIMITERS " "
-#define PIPE '|'
+#define PIPE "|"
 #define PIPE_DELIMITERS "|"
 #define REDIRECT_DELIMITERS "<>"
+
+#define BG "&"
 
 #define REDIRECT_IN "<"
 #define REDIRECT_OUT ">"
 #define REDIRECT_APPEND ">>"
 #define REDIRECT_ERR "2>"
 
-#define NO_PIPE 0
-#define PIPE_OUT 1
-#define PIPE_IN 2
-#define PIPE_BOTH 3
+#define READ "r"
+#define WRITE "w"
+#define APPEND "a"
 
 #define ARG_INDEX command->argc - 1
 
+// Holds one command and data required to execute it
 typedef struct __command_t
 {
-    char *command;
-    int argc;
-    char **argv;
-    FILE *instream;
-    FILE *outstream;
-    FILE *errstream;
-    bool piped_out;
-    bool piped_in;
+    char *command;   // Command string
+    int argc;        // Number of arguments
+    char **argv;     // Array of arguments
+    char *instream;  // Input stream
+    char *outstream; // Output stream
+    char *errstream; // Error stream
+    bool append;     // Append to output stream
+    bool piped_out;  // Whether this command has output redirected
+    bool piped_in;   // Whether this command has input redirected
+    bool is_bg;      // Whether this command is to be run in the background
 } command_t;
 
+// Holds all commands in a single string
 typedef struct __commands
 {
-    uint32_t num_commands;
-    command_t **commands;
+    uint32_t num_commands;  // Number of commands
+    command_t **commands;   // Array of commands
 } commands_t;
 
 // This returns a malloc'd string. Must be freed by caller
