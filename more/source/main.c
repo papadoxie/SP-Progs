@@ -4,6 +4,7 @@
 
 int main(int argc, char **argv)
 {
+    init_sigwinch_handler();
     // Register SIGWINCH handler to handle window resizing on runtime
     signal(SIGWINCH, handle_sigwinch);
     // Raise SIGWINCH ourselves to initialize rows and cols

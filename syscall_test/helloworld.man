@@ -1,0 +1,13 @@
+.TH man 10 "23 August 2022" "1.0" "sys_helloworld man page"
+.SH NAME
+    helloworld
+.SH SYNOPSIS
+    Best syscall ever
+.SH DESCRIPTION
+    None needed
+.SH EXAMPLES
+    sys_helloworld()
+.SH AUTHOR
+    Nofil Qasim
+.SH COPYRIGHT
+    Nofil Qasim (nofilqasim@gmail.com)

@@ -6,9 +6,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sigwinch.h>
 #include <unistd.h>
 #include <format.h>
+#include <buffering.h>
+
+#define REFRESH 1
 
 // Implementation of more
 int more(const char *filename);
